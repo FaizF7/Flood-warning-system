@@ -1,0 +1,24 @@
+import matplotlib.pyplot as plt
+from datetime import datetime, timedelta
+from floodsystem.datafetcher import fetch_measure_levels
+from floodsystem.plot import plot_water_levels
+from floodsystem.stationdata import build_station_list, update_water_levels
+from floodsystem.station import MonitoringStation
+
+def test_plot_water_levels():
+
+    stations = build_station_list()
+    stations_updated = update_water_levels(stations)
+
+    dt = 5
+    for station in stations:
+        if station.name == 'Cam':
+            dates, levels = fetch_measure_levels(station.measure_id, dt=timedelta(days=dt))
+
+            
+            t = []
+            for date, level in zip(dates, levels):
+                t.append(date)
+            print(levels)
+
+            plot_water_levels(station, t, levels)
